@@ -8,15 +8,9 @@ const { getlist, getVerify, create } = require('./api.js')
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
-let message = '蒸蒸日上'+process.env.UUU
-console.log(process.env.UUU)
-console.log(`TOKEN length: ${process.env.TOKEN.length}`);
-console.log(`UID length: ${process.env.UID.length}`);
-console.log(`UUU length: ${process.env.UUU.length}`);
+let message = '蒸蒸日上'
+
 if (!TOKEN || !UID) return
-
-console.log(message)
-
 
 function sleep(ms) {
   return new Promise((resolve) => {
@@ -32,6 +26,7 @@ const gettid = async () => {
   if (res?.code == 0) {
     const list = res.data.list
     const today = dayjs().format('YYYY.M.D')
+    console.log(today)
     list.some((item) => {
       const { fid, tid, title } = item
       if (title.indexOf(today) != -1) {

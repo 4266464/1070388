@@ -6,12 +6,12 @@ const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')
 
 const TOKEN = process.env.TOKEN || null
-const AUTHOR = process.env.AUTHOR || null
+const UID = process.env.UID || null
 
 let message = '蒸蒸日上'
 
 console.log(message)
-if (!TOKEN || !AUTHOR) return
+if (!TOKEN || !UID) return
 
 
 function sleep(ms) {
@@ -53,7 +53,7 @@ const verifyToken = async ({ fid, tid }) => {
 
 const reply = async ({ fid, tid, message, verify }) => {
   await sleep(200)
-  let res = await create({ fid, tid, TOKEN, message, verify, AUTHOR })
+  let res = await create({ fid, tid, TOKEN, message, verify, UID })
   if (res?.code == '0') {
     console.log(res.data?.reward)
   } else {

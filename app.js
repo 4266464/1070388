@@ -1,3 +1,4 @@
+require('dotenv').config()
 const today = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Shanghai', year: 'numeric', month: 'numeric', day: 'numeric' }).replace(/([0-9]+)\/([0-9]+)\/([0-9]+)/, (s,m,d,y)=>`${y}.${m}.${d}`)
 const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')

@@ -10,13 +10,10 @@ const UID = process.env.UID || null
 
 let message = '蒸蒸日上'
 
-console.log(message)
-
-console.log(UID)
-
-console.log(TOKEN)
 
 if (!TOKEN || !UID) return
+
+console.log(message)
 
 
 function sleep(ms) {
@@ -29,6 +26,7 @@ function sleep(ms) {
 
 const gettid = async () => {
   let res = await getlist(TOKEN)
+  console.log(res)
   if (res?.code == 0) {
     const list = res.data.list
     const today = dayjs().format('YYYY.M.D')
@@ -67,4 +65,4 @@ const reply = async ({ fid, tid, message, verify }) => {
 }
 
 
-  gettid()
+gettid()

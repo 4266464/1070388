@@ -18,6 +18,7 @@ const retryDelay = 1000;
 
 const gettid = async () => {
   let res = await getlist(TOKEN)
+  console.log(res)
   if (res?.code == 0) {
     const list = res.data.list
     if (!list.some((item) => {
@@ -91,6 +92,7 @@ const executeMainProcess = () => {
     gettid();
   } else {
     const delay = (60 - seconds) * 1000;
+    console.log(`Waiting ${delay}ms until next minute`);
     setTimeout(executeMainProcess, delay);
   }
 };

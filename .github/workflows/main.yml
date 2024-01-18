@@ -23,7 +23,7 @@ jobs:
       - name: Install Dependency & Run
         env:
           TOKEN: ${{ secrets.TOKEN }}
-          AUTHOR: ${{ secrets.UID }}
+          UID: ${{ secrets.UID }}
         run: |
           npm install
           node ./app.js

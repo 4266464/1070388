@@ -35,7 +35,7 @@ exports.getlist = (token) =>
     headers: { Authenticate: token }
   })
 
-exports.create = ({ fid, tid, TOKEN, verify, message, AUTHOR }) =>
+exports.create = ({ fid, tid, TOKEN, verify, message, UID }) =>
   request({
     url: '/wx/post/create',
     method: 'POST',
@@ -45,7 +45,7 @@ exports.create = ({ fid, tid, TOKEN, verify, message, AUTHOR }) =>
       tid,
       message,
       img_urls: [],
-      reply_to: AUTHOR,
+      reply_to: UID,
       emojy: 0,
       verify
     }

@@ -1,33 +1,27 @@
 require('dotenv').config()
-const dayjs = require('dayjs')
-const customParseFormat = require('dayjs/plugin/customParseFormat')
-dayjs.extend(customParseFormat)
+const moment = require('moment-timezone')
+const today = moment().tz('Asia/Shanghai').format('YYYY.M.D')
 const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')
 
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
-let message = '蒸蒸日上'
-
+console.log(today)
 if (!TOKEN || !UID) return
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve()
-    }, ms)
-  })
-}
+let message = '蒸蒸日上'
+
+
+let retryCount = 0;
+const maxRetries = 20;
+const retryDelay = 1000;
 
 const gettid = async () => {
   let res = await getlist(TOKEN)
-  console.log(res)
   if (res?.code == 0) {
     const list = res.data.list
-    const today = dayjs().format('YYYY.M.D')
-    console.log(today)
-    list.some((item) => {
+    if (!list.some((item) => {
       const { fid, tid, title } = item
       if (title.indexOf(today) != -1) {
         console.log('匹配标题', title)
@@ -35,12 +29,32 @@ const gettid = async () => {
         return true
       }
       return false
-    })||console.log('未找到贴子')
+    })) {
+      // If no match found, retry up to 20 times with a 1-second delay
+      const retry = async () => {
+        await sleep(retryDelay);
+        retryCount++;
+        if (retryCount <= maxRetries) {
+          await gettid();
+        }
+      };
+      retry();
+    }
+  } else {
+    // Retry if res.code is not 0
+    const retry = async () => {
+      await sleep(retryDelay);
+      retryCount++;
+      if (retryCount <= maxRetries) {
+        await gettid();
+      }
+    };
+    retry();
   }
 }
 
 const verifyToken = async ({ fid, tid }) => {
-  await sleep(200)
+  await sleep(150)
   let res = await getVerify(TOKEN)
   if (res?.code == '0') {
     let safe = res.data.verify_token
@@ -52,7 +66,7 @@ const verifyToken = async ({ fid, tid }) => {
 }
 
 const reply = async ({ fid, tid, message, verify }) => {
-  await sleep(200)
+  await sleep(150)
   let res = await create({ fid, tid, TOKEN, message, verify, UID })
   if (res?.code == '0') {
     console.log(res.data?.reward)
@@ -62,4 +76,24 @@ const reply = async ({ fid, tid, message, verify }) => {
 }
 
 
-gettid()
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, ms)
+  })
+}
+
+
+
+const executeMainProcess = () => {
+  const seconds = new Date().getSeconds();
+  if (seconds === 0) {
+    gettid();
+  } else {
+    const delay = (60 - seconds) * 1000;
+    setTimeout(executeMainProcess, delay);
+  }
+};
+
+executeMainProcess();

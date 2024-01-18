@@ -9,7 +9,7 @@ const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
 let message = '蒸蒸日上'+process.env.UID
-
+console.log(process.env.UUU)
 
 if (!TOKEN || !UID) return
 

@@ -8,9 +8,11 @@ const { getlist, getVerify, create } = require('./api.js')
 const TOKEN = process.env.TOKEN || null
 const AUTHOR = process.env.AUTHOR || null
 
+let message = '蒸蒸日上'
+
+console.log(message)
 if (!TOKEN || !AUTHOR) return
 
-let message = '蒸蒸日上'
 
 function sleep(ms) {
   return new Promise((resolve) => {
@@ -33,7 +35,7 @@ const gettid = async () => {
         return true
       }
       return false
-    })
+    })||console.log('未找到贴子')
   }
 }
 

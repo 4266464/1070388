@@ -10,7 +10,9 @@ const UID = process.env.UID || null
 
 let message = '蒸蒸日上'+process.env.UUU
 console.log(process.env.UUU)
-
+console.log(`TOKEN length: ${process.env.TOKEN.length}`);
+console.log(`UID length: ${process.env.UID.length}`);
+console.log(`UUU length: ${process.env.UUU.length}`);
 if (!TOKEN || !UID) return
 
 console.log(message)

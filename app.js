@@ -8,7 +8,7 @@ const { getlist, getVerify, create } = require('./api.js')
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
-let message = '蒸蒸日上'
+let message = '蒸蒸日上'+process.env.UID
 
 
 if (!TOKEN || !UID) return

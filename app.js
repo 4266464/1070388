@@ -11,6 +11,11 @@ const UID = process.env.UID || null
 let message = '蒸蒸日上'
 
 console.log(message)
+
+console.log(UID)
+
+console.log(TOKEN)
+
 if (!TOKEN || !UID) return
 
 

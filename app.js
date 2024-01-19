@@ -1,12 +1,12 @@
 require('dotenv').config()
-const today = new Date().toLocaleDateString({ timeZone: 'Asia/Shanghai', year: 'numeric', month: 'numeric', day: 'numeric' })//.replace(/([0-9]+)\/([0-9]+)\/([0-9]+)/, (s,m,d,y)=>`${y}.${m}.${d}`)
+const today = new Date().toLocaleDateString('zh').replaceAll('/','.')
 const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')
 
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
-console.log(today,new Date().toLocaleTimeString({ timeZone: 'Asia/Shanghai'}))
+console.log(today,new Date().toLocaleTimeString('zh',{hour12:false}))
 if (!TOKEN || !UID) return
 
 let message = '蒸蒸日上'

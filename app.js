@@ -1,12 +1,12 @@
 require('dotenv').config()
-const today = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Shanghai', year: 'numeric', month: 'numeric', day: 'numeric' }).replace(/([0-9]+)\/([0-9]+)\/([0-9]+)/, (s,m,d,y)=>`${y}.${m}.${d}`)
+const today = new Date().toLocaleDateString({ timeZone: 'Asia/Shanghai', year: 'numeric', month: 'numeric', day: 'numeric' })//.replace(/([0-9]+)\/([0-9]+)\/([0-9]+)/, (s,m,d,y)=>`${y}.${m}.${d}`)
 const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')
 
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
 
-console.log(today)
+console.log(today,new Date().toLocaleTimeString({ timeZone: 'Asia/Shanghai'}))
 if (!TOKEN || !UID) return
 
 let message = '蒸蒸日上'
@@ -15,41 +15,35 @@ let message = '蒸蒸日上'
 let retryCount = 0;
 const maxRetries = 20;
 const retryDelay = 1000;
+// If no match found, retry up to 20 times with a 1-second delay
+const retry = async () => {
+  retryCount++;
+  await sleep(retryDelay);
+  await gettid();
+};
 
 const gettid = async () => {
   let res = await getlist(TOKEN)
   console.log(res)
   if (res?.code == 0) {
     const list = res.data.list
-    if (!list.some((item) => {
+    console.log(JSON.stringify(list))
+    if (!list.slice(0,5).some((item) => {
       const { fid, tid, title } = item
-      if (title.indexOf(today) != -1) {
-        console.log('匹配标题', title)
-        verifyToken({ fid, tid })
-        return true
-      }
-      return false
+      if (retryCount <= maxRetries && title.indexOf(today) === -1) { return false }
+      console.log('匹配标题', title)
+      verifyToken({ fid, tid })
+      return true
     })) {
-      // If no match found, retry up to 20 times with a 1-second delay
-      const retry = async () => {
-        await sleep(retryDelay);
-        retryCount++;
-        if (retryCount <= maxRetries) {
-          await gettid();
-        }
-      };
-      retry();
+      if (retryCount <= maxRetries) {
+        retry();
+      }
+      else
     }
   } else {
-    // Retry if res.code is not 0
-    const retry = async () => {
-      await sleep(retryDelay);
-      retryCount++;
-      if (retryCount <= maxRetries) {
-        await gettid();
-      }
-    };
-    retry();
+    if (retryCount <= maxRetries) {
+      retry();
+    }
   }
 }
 
@@ -88,13 +82,16 @@ function sleep(ms) {
 
 const executeMainProcess = () => {
   const seconds = new Date().getSeconds();
-  if (seconds === 0) {
+  const minutes = new Date().getMinutes();
+  if (minutes<30||seconds === 0) {
     gettid();
   } else {
-    const delay = (60 - seconds) * 1000;
+    const delay = (60 - seconds) * 1001;
     console.log(`Waiting ${delay}ms until next minute`);
-    setTimeout(executeMainProcess, delay);
+    setTimeout(gettid, delay);
   }
 };
+
+executeMainProcess();
 
 executeMainProcess();

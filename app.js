@@ -27,7 +27,7 @@ const gettid = async () => {
   console.log(res)
   if (res?.code == 0) {
     const list = res.data.list
-    console.log(JSON.stringify(list))
+    console.log(list.map(l=>l.title))
     if (!list.slice(0,5).some((item) => {
       const { fid, tid, title } = item
       if (retryCount < maxRetries && !title.includes(today)) { return false }

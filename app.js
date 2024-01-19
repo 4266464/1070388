@@ -25,9 +25,9 @@ const retry = async () => {
 const gettid = async () => {
 	let res = await getlist(TOKEN)
 	if (res?.code == 0) {
-		const list = res.data.list
+		const list = res.data.list.slice(0, 5)
 		console.log(list.map(l => l.title))
-		if (!list.slice(0, 5).some((item) => {
+		if (!list.some((item) => {
 			const { fid, tid, title } = item
 			if (retryCount < maxRetries && !title.includes(today)) { return false }
 			console.log('匹配标题', title)
@@ -84,7 +84,7 @@ const executeMainProcess = () => {
 	if (minutes < 20 || seconds === 0) {
 		gettid();
 	} else {
-		const delay = (60 - seconds) * 1001;
+		const delay = (60 - seconds) * 1000;
 		console.log(`Waiting ${delay}ms until next minute`);
 		setTimeout(gettid, delay);
 	}

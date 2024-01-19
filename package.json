@@ -2,7 +2,7 @@
   "name": "1070388",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node index.js",
     "action": "node app.js",

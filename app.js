@@ -30,7 +30,7 @@ const gettid = async () => {
     console.log(JSON.stringify(list))
     if (!list.slice(0,5).some((item) => {
       const { fid, tid, title } = item
-      if (retryCount <= maxRetries && title.indexOf(today) === -1) { return false }
+      if (retryCount < maxRetries && !title.includes(today)) { return false }
       console.log('匹配标题', title)
       verifyToken({ fid, tid })
       return true
@@ -38,7 +38,6 @@ const gettid = async () => {
       if (retryCount <= maxRetries) {
         retry();
       }
-      else
     }
   } else {
     if (retryCount <= maxRetries) {

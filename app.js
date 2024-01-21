@@ -23,6 +23,7 @@ const retry = async () => {
 };
 
 const gettid = async () => {
+	console.log(new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }))
 	let res = await getlist(TOKEN)
 	if (res?.code == 0) {
 		const list = res.data.list.slice(0, 5)
@@ -79,13 +80,14 @@ function sleep(ms) {
 
 
 const executeMainProcess = () => {
-	const seconds = new Date().getSeconds();
-	const minutes = new Date().getMinutes();
-	if (minutes < 20 || seconds === 0) {
+	let hours = new Date().getHours();
+	let minutes = new Date().getMinutes();
+	let seconds = new Date().getSeconds();
+	let delay = (((8 - hours) * 60 + 59 - minutes) * 60 + 59 - seconds) * 1000
+	console.log(`Waiting ${delay/1000}s until next minute`);
+	if (delay < 0) {
 		gettid();
 	} else {
-		const delay = (60 - seconds) * 1000;
-		console.log(`Waiting ${delay}ms until next minute`);
 		setTimeout(gettid, delay);
 	}
 };

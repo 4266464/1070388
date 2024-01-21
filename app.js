@@ -81,7 +81,7 @@ function sleep(ms) {
 
 const executeMainProcess = () => {
 	let [hour, minute, second] = new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }).split(':');
-	let delay = (((8 - hours) * 60 + 59 - minutes) * 60 + 59 - seconds) * 1000
+	let delay = (((8 - hour) * 60 + 59 - minute) * 60 + 59 - second) * 1000
 	console.log(`Waiting ${delay/1000}s until next minute`);
 	if (delay < 0) {
 		gettid();

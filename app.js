@@ -14,7 +14,7 @@ let message = '蒸蒸日上'
 
 let retryCount = 0;
 const maxRetries = 20;
-const retryDelay = 1000;
+const retryDelay = 300;
 // If no match found, retry up to 20 times with a 1-second delay
 const retry = async () => {
 	retryCount++;
@@ -23,8 +23,9 @@ const retry = async () => {
 };
 
 const gettid = async () => {
-	console.log(new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }))
+	console.log('开始获取',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }))
 	let res = await getlist(TOKEN)
+	console.log('获取成功',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }))
 	if (res?.code == 0) {
 		const list = res.data.list.slice(0, 5)
 		console.log(list.map(l => l.title))
@@ -47,7 +48,7 @@ const gettid = async () => {
 }
 
 const verifyToken = async ({ fid, tid }) => {
-	await sleep(150)
+	await sleep(100)
 	let res = await getVerify(TOKEN)
 	if (res?.code == '0') {
 		let safe = res.data.verify_token
@@ -59,7 +60,7 @@ const verifyToken = async ({ fid, tid }) => {
 }
 
 const reply = async ({ fid, tid, message, verify }) => {
-	await sleep(150)
+	await sleep(100)
 	let res = await create({ fid, tid, TOKEN, message, verify, UID })
 	if (res?.code == '0') {
 		console.log(res.data?.reward)

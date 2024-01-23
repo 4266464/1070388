@@ -23,9 +23,9 @@ const retry = async () => {
 };
 
 const gettid = async () => {
-	console.log('开始获取',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+String(new Date().getMilliseconds()).padStart(3, '0'))
+	console.log('开始获取',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+'.'+String(new Date().getMilliseconds()).padStart(3, '0'))
 	let res = await getlist(TOKEN)
-	console.log('获取成功',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+String(new Date().getMilliseconds()).padStart(3, '0'))
+	console.log('获取成功',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+'.'+String(new Date().getMilliseconds()).padStart(3, '0'))
 	if (res?.code == 0) {
 		const list = res.data.list.slice(0, 5)
 		console.log(list.map(l => l.title))

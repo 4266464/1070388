@@ -24,7 +24,8 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
           UID: ${{ secrets.UID }}
-          UUU: ${{ secrets.UUU }}
+          MAIL: ${{ secrets.MAIL }}
+          KEY: ${{ secrets.KEY }}
         run: |
           npm install
           node ./app.js

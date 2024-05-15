@@ -2,9 +2,13 @@ require('dotenv').config()
 const today = new Date().toLocaleDateString('zh', { timeZone: 'Asia/Shanghai' }).replaceAll('/', '.')
 const md5 = require('js-md5')
 const { getlist, getVerify, create } = require('./api.js')
+const { email } = require('./mail.js');
+
 
 const TOKEN = process.env.TOKEN || null
 const UID = process.env.UID || null
+const MAIL = process.env.MAIL || null
+const KEY = process.env.KEY || null
 
 console.log(today, new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }))
 if (!TOKEN || !UID) return
@@ -12,12 +16,16 @@ if (!TOKEN || !UID) return
 let message = '蒸蒸日上'
 
 
-let retryCount = 0;
+var retryCount = 0;
 const maxRetries = 20;
 const retryDelay = 300;
 // If no match found, retry up to 20 times with a 1-second delay
 const retry = async () => {
 	retryCount++;
+	if(retryCount>=maxRetries){
+		email('三国杀社区签到','签到失败',MAIL,KEY);
+		return;
+	}
 	await sleep(retryDelay);
 	await gettid();
 };
@@ -36,12 +44,12 @@ const gettid = async () => {
 			verifyToken({ fid, tid })
 			return true
 		})) {
-			if (retryCount <= maxRetries) {
+			if (retryCount < maxRetries) {
 				retry();
 			}
 		}
 	} else {
-		if (retryCount <= maxRetries) {
+		if (retryCount < maxRetries) {
 			retry();
 		}
 	}
@@ -92,4 +100,3 @@ const executeMainProcess = () => {
 };
 
 executeMainProcess();
-

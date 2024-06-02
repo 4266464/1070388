@@ -40,7 +40,7 @@ const gettid = async () => {
 		console.log(list.map(l => l.title))
 		if (!list.some((item) => {
 			const { fid, tid, title } = item
-			if (retryCount < maxRetries && !title.includes(today)) { return false }
+			if (retryCount < maxRetries && !title.includes(today) && !title.includes('【签到')) { return false }
 			console.log('匹配标题', title)
 			verifyToken({ fid, tid })
 			return true

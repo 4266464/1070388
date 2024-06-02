@@ -14,7 +14,7 @@ console.log(today, new Date().toLocaleTimeString('zh', { hour12: false, timeZone
 if (!TOKEN || !UID) return
 
 let message = '蒸蒸日上'
-
+var alt = false
 
 var retryCount = 0;
 const maxRetries = 20;
@@ -31,11 +31,12 @@ const retry = async () => {
 };
 
 const gettid = async () => {
-	console.log('开始获取',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+'.'+String(new Date().getMilliseconds()).padStart(3, '0'))
-	let res = await getlist(TOKEN)
-	console.log('获取成功',new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' })+'.'+String(new Date().getMilliseconds()).padStart(3, '0'))
+	console.log('开始获取', new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }) + '.' + String(new Date().getMilliseconds()).padStart(3, '0'))
+	let res = await getlist(TOKEN, alt)
+	console.log('获取成功', new Date().toLocaleTimeString('zh', { hour12: false, timeZone: 'Asia/Shanghai' }) + '.' + String(new Date().getMilliseconds()).padStart(3, '0'))
+	if (res?.code !== 0 || !res?.data?.list?.length) alt = true;
 	if (res?.code == 0) {
-		const list = res.data.list.slice(0, 5)
+		const list = res.data.list.slice(0, alt ? 20 : 5)
 		console.log(list.map(l => l.title))
 		if (!list.some((item) => {
 			const { fid, tid, title } = item

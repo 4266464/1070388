@@ -30,7 +30,7 @@ exports.getVerify = (token) =>
 
 exports.getlist = (token, alt) =>
   request({
-    url: alt?'/v2/thread/recommend?fid=87&page=1&sort=1':'/wx/friend/thread/list?uid=1070388&friendId=1070388&page=1',
+    url: alt?'/v2/thread/recommend?page=1&sort=1':'/wx/friend/thread/list?uid=1070388&friendId=1070388&page=1',
     method: 'GET',
     headers: { Authenticate: token }
   })

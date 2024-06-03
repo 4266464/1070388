@@ -28,9 +28,9 @@ exports.getVerify = (token) =>
     headers: { authenticate: token }
   })
 
-exports.getlist = (token, alt) =>
+exports.getlist = (token, sort) =>
   request({
-    url: alt?'/v2/thread/recommend?page=1&sort=1':'/wx/friend/thread/list?uid=1070388&friendId=1070388&page=1',
+    url: [0,1,2].includes(sort) ? ('/v2/thread/recommend?page=1&sort=' + sort) : '/wx/friend/thread/list?uid=1070388&friendId=1070388&page=1',
     method: 'GET',
     headers: { Authenticate: token }
   })

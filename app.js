@@ -14,7 +14,7 @@ console.log(today, new Date().toLocaleTimeString('zh', { hour12: false, timeZone
 if (!TOKEN || !UID) return
 
 let message = '蒸蒸日上'
-var sort = 2
+var sort = 3
 
 var retryCount = 0;
 const maxRetries = 20;

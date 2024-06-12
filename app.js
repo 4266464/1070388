@@ -18,7 +18,7 @@ var sort = 3
 
 var retryCount = 0;
 const maxRetries = 20;
-const retryDelay = 100;
+const retryDelay = 50;
 // If no match found, retry up to 20 times with a 1-second delay
 const retry = async () => {
 	retryCount++;
